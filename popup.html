@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini Multi-Opener</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="card">
+    <div class="header">
+      <img src="icon128.png" alt="Gemini Spark" class="logo">
+      <div class="title-container">
+        <h1>Gemini Opener</h1>
+        <p class="subtitle">Mở nhanh 14 prompts tự động</p>
+      </div>
+    </div>
+
+    <div class="stats-container">
+      <div class="stat-item">
+        <span class="stat-value">14</span>
+        <span class="stat-label">Links</span>
+      </div>
+      <div class="stat-item toggle-item">
+        <label class="switch-container">
+          <input type="checkbox" id="auto-open-toggle">
+          <span class="slider"></span>
+        </label>
+        <span class="stat-label">Tự động mở khi bấm icon</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="open-all-btn" class="btn primary-btn">
+        <span class="btn-text">Mở tất cả 14 Links</span>
+        <span class="btn-glow"></span>
+      </button>
+      <button id="close-all-btn" class="btn danger-btn hidden">
+        <span class="btn-text">Đóng 14 Tabs đã mở</span>
+      </button>
+    </div>
+
+    <div class="link-list-header">
+      <span>Danh sách Link Prompt</span>
+      <button id="toggle-list" class="text-btn">Hiện chi tiết</button>
+    </div>
+
+    <div id="link-list" class="link-list hidden">
+      <!-- Links will be populated here by JS -->
+    </div>
+
+    <div class="footer">
+      <span>Gemini Multi-Opener v1.0</span>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

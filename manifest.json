@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Gemini Multi-Opener",
+  "version": "1.0",
+  "description": "Tự động mở nhanh 14 link Gemini với các prompt được thiết lập sẵn.",
+  "permissions": ["storage", "tabs"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon128.png"
+  },
+  "icons": {
+    "128": "icon128.png"
+  }
+}
