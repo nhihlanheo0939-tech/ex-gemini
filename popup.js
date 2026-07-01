@@ -12,7 +12,11 @@ const links = [
   "https://gemini.google.com/?prompt_id=BjEtFiQq4let&prompt_action=autosubmit&utm_source=&utm_medium=&utm_campaign=",
   "https://gemini.google.com/?prompt_id=DIfMmvU3ufV0&prompt_action=autosubmit&utm_source=&utm_medium=&utm_campaign=",
   "https://gemini.google.com/?prompt_id=s2d1rWfq0lQd&prompt_action=autosubmit&utm_source=&utm_medium=&utm_campaign=",
-  "https://gemini.google.com/?prompt_id=GOFHHrCQNHC1&prompt_action=autosubmit&utm_source=&utm_medium=&utm_campaign="
+  "https://gemini.google.com/?prompt_id=GOFHHrCQNHC1&prompt_action=autosubmit&utm_source=&utm_medium=&utm_campaign=",
+  "https://gemini.google.com/?prompt_id=3VXTngF48MSg&prompt_action=autosubmit&utm_source=&utm_medium=&utm_campaign=",
+  "https://gemini.google.com/?prompt_id=2aqVY8rfFaEj&prompt_action=autosubmit&utm_source=&utm_medium=&utm_campaign=",
+  "https://gemini.google.com/?prompt_id=uzykCsucGcBf&prompt_action=autosubmit&utm_source=&utm_medium=&utm_campaign=",
+  "https://gemini.google.com/?prompt_id=RLoZhagoZlNA&prompt_action=autosubmit&utm_source=&utm_medium=&utm_campaign=",
 ];
 
 // Helper to get prompt ID from URL
@@ -29,10 +33,10 @@ function getPromptId(url) {
 const linkListEl = document.getElementById("link-list");
 links.forEach((url, index) => {
   const promptId = getPromptId(url);
-  
+
   const itemEl = document.createElement("div");
   itemEl.className = "link-item";
-  
+
   itemEl.innerHTML = `
     <div class="link-info">
       <span class="link-name">Prompt #${index + 1} (${promptId.substring(0, 6)}...)</span>
@@ -40,7 +44,7 @@ links.forEach((url, index) => {
     </div>
     <button class="open-single-btn" data-url="${url}">Mở</button>
   `;
-  
+
   linkListEl.appendChild(itemEl);
 });
 
@@ -66,7 +70,7 @@ function updateCloseButtonVisibility() {
       chrome.tabs.query({}, (allTabs) => {
         const activeIds = allTabs.map(t => t.id);
         const existingIds = ids.filter(id => activeIds.includes(id));
-        
+
         if (existingIds.length > 0) {
           closeAllBtn.classList.remove("hidden");
           chrome.storage.local.set({ openedTabIds: existingIds });
@@ -109,9 +113,9 @@ closeAllBtn.addEventListener("click", () => {
   chrome.storage.local.get(["openedTabIds"], (result) => {
     const ids = result.openedTabIds || [];
     let removedCount = 0;
-    
+
     if (ids.length === 0) return;
-    
+
     ids.forEach((id) => {
       chrome.tabs.remove(id, () => {
         // Suppress any errors if tab was already closed
