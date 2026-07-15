@@ -149,6 +149,18 @@ body {
   box-shadow: 0 6px 22px rgba(168, 85, 247, 0.42);
 }
 
+.danger-btn {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 4px 18px rgba(239, 68, 68, 0.28);
+  margin-top: 4px;
+}
+
+.danger-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 22px rgba(239, 68, 68, 0.42);
+}
+
 .btn:active:not(:disabled) {
   transform: translateY(0);
 }
@@ -159,6 +171,10 @@ body {
   transform: none;
   filter: grayscale(0.15);
   box-shadow: none;
+}
+
+.hidden {
+  display: none !important;
 }
 
 .status {

@@ -1,7 +1,10 @@
 /**
  * Gemini Prompt Opener
  * Mở đúng các link Gemini theo topic được chọn.
+ * Theo dõi tab đã mở để đóng hết khi cần.
  */
+
+const STORAGE_KEY = "openedTabIds";
 
 const TOPICS = {
   1: {
@@ -23,6 +26,8 @@ const TOPICS = {
 };
 
 const statusEl = document.getElementById("status");
+const closeAllBtn = document.getElementById("close-all-btn");
+const closeAllCountEl = document.getElementById("close-all-count");
 const topicButtons = Array.from(document.querySelectorAll("[data-topic]"));
 
 /**
@@ -41,10 +46,13 @@ function setStatus(message, type = "") {
 /**
  * @param {boolean} disabled
  */
-function setButtonsDisabled(disabled) {
+function setActionButtonsDisabled(disabled) {
   topicButtons.forEach((btn) => {
     btn.disabled = disabled;
   });
+  if (closeAllBtn) {
+    closeAllBtn.disabled = disabled;
+  }
 }
 
 /**
@@ -62,6 +70,96 @@ function dedupeLinks(links) {
     unique.push(url);
   }
   return unique;
+}
+
+/**
+ * @returns {Promise<number[]>}
+ */
+async function getStoredTabIds() {
+  const result = await chrome.storage.local.get([STORAGE_KEY]);
+  const ids = result[STORAGE_KEY];
+  if (!Array.isArray(ids)) return [];
+  return ids.filter((id) => typeof id === "number");
+}
+
+/**
+ * @param {number[]} ids
+ */
+async function setStoredTabIds(ids) {
+  await chrome.storage.local.set({ [STORAGE_KEY]: ids });
+}
+
+/**
+ * Lọc các tab ID vẫn còn tồn tại.
+ * @param {number[]} ids
+ * @returns {Promise<number[]>}
+ */
+async function filterExistingTabIds(ids) {
+  if (!ids.length) return [];
+
+  const checks = await Promise.all(
+    ids.map(async (id) => {
+      try {
+        const tab = await chrome.tabs.get(id);
+        return tab && typeof tab.id === "number" ? tab.id : null;
+      } catch {
+        return null;
+      }
+    })
+  );
+
+  return checks.filter((id) => id !== null);
+}
+
+/**
+ * Cập nhật nút "Đóng hết" theo số tab extension đã mở còn sống.
+ * @returns {Promise<number>}
+ */
+async function refreshCloseButton() {
+  const stored = await getStoredTabIds();
+  const existing = await filterExistingTabIds(stored);
+
+  if (existing.length !== stored.length) {
+    await setStoredTabIds(existing);
+  }
+
+  if (!closeAllBtn) return existing.length;
+
+  if (existing.length > 0) {
+    closeAllBtn.classList.remove("hidden");
+    if (closeAllCountEl) {
+      closeAllCountEl.textContent = String(existing.length);
+    }
+  } else {
+    closeAllBtn.classList.add("hidden");
+    if (closeAllCountEl) {
+      closeAllCountEl.textContent = "0";
+    }
+  }
+
+  return existing.length;
+}
+
+/**
+ * Lưu thêm tab ID vừa mở (cộng dồn qua nhiều lần bấm).
+ * @param {number[]} newIds
+ */
+async function appendOpenedTabIds(newIds) {
+  const validNew = newIds.filter((id) => typeof id === "number");
+  if (!validNew.length) return;
+
+  const stored = await getStoredTabIds();
+  const merged = [...stored];
+  const seen = new Set(stored);
+
+  for (const id of validNew) {
+    if (!seen.has(id)) {
+      seen.add(id);
+      merged.push(id);
+    }
+  }
+
+  await setStoredTabIds(merged);
 }
 
 /**
@@ -97,6 +195,12 @@ async function openTopic(topicId) {
     })
   );
 
+  const tabIds = createdTabs
+    .map((tab) => (tab && typeof tab.id === "number" ? tab.id : null))
+    .filter((id) => id !== null);
+
+  await appendOpenedTabIds(tabIds);
+
   const firstTab = createdTabs.find((tab) => tab && typeof tab.id === "number");
   if (firstTab) {
     try {
@@ -109,7 +213,37 @@ async function openTopic(topicId) {
   return {
     topicName: topic.name,
     count: createdTabs.length,
+    totalTracked: (await getStoredTabIds()).length,
   };
+}
+
+/**
+ * Đóng toàn bộ tab do extension đã mở (qua nhiều lần bấm topic).
+ */
+async function closeAllOpenedTabs() {
+  const stored = await getStoredTabIds();
+  const existing = await filterExistingTabIds(stored);
+
+  if (existing.length === 0) {
+    await setStoredTabIds([]);
+    await refreshCloseButton();
+    return { closed: 0 };
+  }
+
+  await Promise.all(
+    existing.map(async (id) => {
+      try {
+        await chrome.tabs.remove(id);
+      } catch {
+        // Tab có thể đã bị đóng tay — bỏ qua.
+      }
+    })
+  );
+
+  await setStoredTabIds([]);
+  await refreshCloseButton();
+
+  return { closed: existing.length };
 }
 
 /**
@@ -125,7 +259,7 @@ async function handleTopicClick(event) {
     return;
   }
 
-  setButtonsDisabled(true);
+  setActionButtonsDisabled(true);
 
   const topic = TOPICS[String(topicId)];
   const countHint = topic && Array.isArray(topic.links) ? topic.links.length : "?";
@@ -135,16 +269,44 @@ async function handleTopicClick(event) {
 
   try {
     const result = await openTopic(topicId);
-    setStatus(`Đã mở thành công ${result.count} prompt.`, "success");
+    await refreshCloseButton();
+    setStatus(
+      `Đã mở thành công ${result.count} prompt. Đang theo dõi ${result.totalTracked} tab.`,
+      "success"
+    );
   } catch (err) {
     const msg = err && err.message ? err.message : "Đã xảy ra lỗi không xác định.";
     setStatus(msg, "error");
+    await refreshCloseButton();
   } finally {
-    setButtonsDisabled(false);
+    setActionButtonsDisabled(false);
   }
 }
 
-function init() {
+/**
+ * Xử lý click nút đóng hết.
+ */
+async function handleCloseAllClick() {
+  setActionButtonsDisabled(true);
+  setStatus("Đang đóng các tab đã mở...", "loading");
+
+  try {
+    const result = await closeAllOpenedTabs();
+    if (result.closed === 0) {
+      setStatus("Không còn tab nào do extension mở.", "success");
+    } else {
+      setStatus(`Đã đóng ${result.closed} tab.`, "success");
+    }
+  } catch (err) {
+    const msg = err && err.message ? err.message : "Không đóng được các tab.";
+    setStatus(msg, "error");
+    await refreshCloseButton();
+  } finally {
+    setActionButtonsDisabled(false);
+  }
+}
+
+async function init() {
   if (topicButtons.length === 0) {
     setStatus("Không tìm thấy nút chọn topic.", "error");
     return;
@@ -153,6 +315,16 @@ function init() {
   topicButtons.forEach((btn) => {
     btn.addEventListener("click", handleTopicClick);
   });
+
+  if (closeAllBtn) {
+    closeAllBtn.addEventListener("click", handleCloseAllClick);
+  }
+
+  try {
+    await refreshCloseButton();
+  } catch {
+    // Storage/tabs có thể chưa sẵn — không chặn UI.
+  }
 }
 
 init();

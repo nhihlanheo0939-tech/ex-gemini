@@ -8,6 +8,7 @@ Chrome Extension (Manifest V3) dùng để mở nhanh các prompt Gemini theo **
 - **Topic 1**: mở đúng 4 prompt.
 - **Topic 2**: mở đúng 2 prompt.
 - Mỗi lần chỉ mở đúng topic đã chọn.
+- Theo dõi các tab đã mở qua nhiều lần bấm; nút **Đóng hết tab đã mở** để dọn tab, giảm tải máy.
 
 ## Cài đặt (Developer mode)
 
@@ -23,6 +24,7 @@ Chrome Extension (Manifest V3) dùng để mở nhanh các prompt Gemini theo **
 3. Chọn **Mở Topic 1** (4 prompt) hoặc **Mở Topic 2** (2 prompt).
 4. Extension mở các tab Gemini ở nền, rồi kích hoạt một tab vừa mở.
 5. Trong lúc đang mở, các nút bị vô hiệu hóa để tránh bấm liên tục.
+6. Nếu đã mở topic nhiều lần, bấm **Đóng hết tab đã mở** để đóng toàn bộ tab extension đã tạo.
 
 ## Danh sách link prompt
 
@@ -50,7 +52,8 @@ Chrome Extension (Manifest V3) dùng để mở nhanh các prompt Gemini theo **
 
 ## Quyền
 
-- `tabs`: tạo và kích hoạt tab Chrome.
+- `tabs`: tạo, kích hoạt và đóng tab Chrome.
+- `storage`: nhớ danh sách tab ID đã mở (cộng dồn qua nhiều lần bấm).
 
 ## Ghi chú
 

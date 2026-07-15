@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "Gemini Prompt Opener",
-  "version": "1.1",
-  "description": "Chọn Topic và mở đúng các prompt Gemini đã cấu hình sẵn.",
-  "permissions": ["tabs"],
+  "version": "1.2",
+  "description": "Chọn Topic, mở prompt Gemini và đóng hết tab đã mở khi cần.",
+  "permissions": ["tabs", "storage"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": "icon128.png",
