@@ -1,12 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "Gemini Multi-Opener",
-  "version": "1.0",
-  "description": "Tự động mở nhanh 14 link Gemini với các prompt được thiết lập sẵn.",
-  "permissions": ["storage", "tabs"],
+  "name": "Gemini Prompt Opener",
+  "version": "1.1",
+  "description": "Chọn Topic và mở đúng các prompt Gemini đã cấu hình sẵn.",
+  "permissions": ["tabs"],
   "action": {
     "default_popup": "popup.html",
-    "default_icon": "icon128.png"
+    "default_icon": "icon128.png",
+    "default_title": "Gemini Prompt Opener"
   },
   "icons": {
     "128": "icon128.png"
