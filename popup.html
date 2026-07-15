@@ -21,15 +21,27 @@
     <p class="prompt-question" id="prompt-question">Bạn muốn mở Topic nào?</p>
 
     <div class="actions" role="group" aria-labelledby="prompt-question">
-      <button type="button" class="btn topic-btn" data-topic="1" id="btn-topic-1">
-        <span class="btn-title">Mở Topic 1</span>
-        <span class="btn-meta">4 prompt</span>
-      </button>
+      <div class="topic-grid">
+        <button type="button" class="btn topic-btn" data-topic="1" id="btn-topic-1">
+          <span class="btn-title">Topic 1</span>
+          <span class="btn-meta">4 prompt</span>
+        </button>
 
-      <button type="button" class="btn topic-btn topic-btn-alt" data-topic="2" id="btn-topic-2">
-        <span class="btn-title">Mở Topic 2</span>
-        <span class="btn-meta">4 prompt</span>
-      </button>
+        <button type="button" class="btn topic-btn topic-btn-alt" data-topic="2" id="btn-topic-2">
+          <span class="btn-title">Topic 2</span>
+          <span class="btn-meta">4 prompt</span>
+        </button>
+
+        <button type="button" class="btn topic-btn" data-topic="3" id="btn-topic-3">
+          <span class="btn-title">Topic 3</span>
+          <span class="btn-meta">4 prompt</span>
+        </button>
+
+        <button type="button" class="btn topic-btn topic-btn-alt" data-topic="4" id="btn-topic-4">
+          <span class="btn-title">Topic 4</span>
+          <span class="btn-meta">4 prompt</span>
+        </button>
+      </div>
 
       <button type="button" class="btn danger-btn hidden" id="close-all-btn">
         <span class="btn-title">Đóng hết tab đã mở</span>
@@ -40,7 +52,7 @@
     <div id="status" class="status" role="status" aria-live="polite" aria-atomic="true"></div>
 
     <footer class="footer">
-      <span>Gemini Prompt Opener v1.3</span>
+      <span>Gemini Prompt Opener v1.5.1</span>
     </footer>
   </div>
 

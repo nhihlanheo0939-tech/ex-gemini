@@ -25,12 +25,33 @@ const TOPICS = {
       "https://gemini.google.com/?prompt_id=IWbiwkLsa1E3&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%208_autosubmit",
     ],
   },
+  3: {
+    name: "Topic 3",
+    links: [
+      "https://gemini.google.com/?prompt_id=9Aj0RAyTKyHb&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%2010_autosubmit",
+      "https://gemini.google.com/?prompt_id=PeHh1T4GLwep&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%209_autosubmit",
+      "https://gemini.google.com/?prompt_id=OgRYVDvDUDAu&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%2020_autosubmit",
+      "https://gemini.google.com/?prompt_id=p3yYcEkTlWd6&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%2011_autosubmit",
+    ],
+  },
+  4: {
+    name: "Topic 4",
+    links: [
+      "https://gemini.google.com/?prompt_id=BjEtFiQq4let&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%2012_autosubmit",
+      "https://gemini.google.com/?prompt_id=DIfMmvU3ufV0&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%2013_autosubmit",
+      "https://gemini.google.com/?prompt_id=s2d1rWfq0lQd&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%2014_autosubmit",
+      "https://gemini.google.com/?prompt_id=GOFHHrCQNHC1&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%2015_autosubmit",
+    ],
+  },
 };
 
 const statusEl = document.getElementById("status");
 const closeAllBtn = document.getElementById("close-all-btn");
 const closeAllCountEl = document.getElementById("close-all-count");
 const topicButtons = Array.from(document.querySelectorAll("[data-topic]"));
+
+/** Chặn bấm topic/đóng tab đồng thời khi đang xử lý. */
+let isOpening = false;
 
 /**
  * @param {string} message
@@ -249,10 +270,12 @@ async function closeAllOpenedTabs() {
 }
 
 /**
- * Xử lý click nút topic.
+ * Xử lý click nút topic (chung cho mọi data-topic).
  * @param {Event} event
  */
 async function handleTopicClick(event) {
+  if (isOpening) return;
+
   const button = event.currentTarget;
   const topicId = button.getAttribute("data-topic");
 
@@ -261,12 +284,12 @@ async function handleTopicClick(event) {
     return;
   }
 
-  setActionButtonsDisabled(true);
-
   const topic = TOPICS[String(topicId)];
   const countHint = topic && Array.isArray(topic.links) ? topic.links.length : "?";
   const nameHint = topic ? topic.name : `Topic ${topicId}`;
 
+  isOpening = true;
+  setActionButtonsDisabled(true);
   setStatus(`Đang mở ${countHint} prompt của ${nameHint}...`, "loading");
 
   try {
@@ -278,9 +301,10 @@ async function handleTopicClick(event) {
     );
   } catch (err) {
     const msg = err && err.message ? err.message : "Đã xảy ra lỗi không xác định.";
-    setStatus(msg, "error");
+    setStatus(`Không thể mở ${nameHint}: ${msg}`, "error");
     await refreshCloseButton();
   } finally {
+    isOpening = false;
     setActionButtonsDisabled(false);
   }
 }
@@ -289,6 +313,9 @@ async function handleTopicClick(event) {
  * Xử lý click nút đóng hết.
  */
 async function handleCloseAllClick() {
+  if (isOpening) return;
+
+  isOpening = true;
   setActionButtonsDisabled(true);
   setStatus("Đang đóng các tab đã mở...", "loading");
 
@@ -304,6 +331,7 @@ async function handleCloseAllClick() {
     setStatus(msg, "error");
     await refreshCloseButton();
   } finally {
+    isOpening = false;
     setActionButtonsDisabled(false);
   }
 }
