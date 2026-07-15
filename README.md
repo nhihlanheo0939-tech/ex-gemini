@@ -6,7 +6,7 @@ Chrome Extension (Manifest V3) dùng để mở nhanh các prompt Gemini theo **
 
 - Bấm biểu tượng extension → luôn hiện popup chọn topic (không tự mở link).
 - **Topic 1**: mở đúng 4 prompt.
-- **Topic 2**: mở đúng 2 prompt.
+- **Topic 2**: mở đúng 4 prompt.
 - Mỗi lần chỉ mở đúng topic đã chọn.
 - Theo dõi các tab đã mở qua nhiều lần bấm; nút **Đóng hết tab đã mở** để dọn tab, giảm tải máy.
 
@@ -21,7 +21,7 @@ Chrome Extension (Manifest V3) dùng để mở nhanh các prompt Gemini theo **
 
 1. Bấm biểu tượng **Gemini Prompt Opener** trên thanh công cụ.
 2. Đọc câu hỏi: *Bạn muốn mở Topic nào?*
-3. Chọn **Mở Topic 1** (4 prompt) hoặc **Mở Topic 2** (2 prompt).
+3. Chọn **Mở Topic 1** (4 prompt) hoặc **Mở Topic 2** (4 prompt).
 4. Extension mở các tab Gemini ở nền, rồi kích hoạt một tab vừa mở.
 5. Trong lúc đang mở, các nút bị vô hiệu hóa để tránh bấm liên tục.
 6. Nếu đã mở topic nhiều lần, bấm **Đóng hết tab đã mở** để đóng toàn bộ tab extension đã tạo.
@@ -35,10 +35,12 @@ Chrome Extension (Manifest V3) dùng để mở nhanh các prompt Gemini theo **
 3. [Prompt 3](https://gemini.google.com/?prompt_id=flFxTHV9UxtT&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%203_autosubmit)
 4. [Prompt 4](https://gemini.google.com/?prompt_id=QQ8ZnrEeChej&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%202_autosubmit)
 
-### Topic 2 (2 prompt)
+### Topic 2 (4 prompt)
 
-1. [Prompt 1](https://gemini.google.com/?prompt_id=a7ClBVbevDuo&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%205_autosubmit)
-2. [Prompt 2](https://gemini.google.com/?prompt_id=qcor9HH7fpfP&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%206_autosubmit)
+1. [Prompt 5](https://gemini.google.com/?prompt_id=a7ClBVbevDuo&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%205_autosubmit)
+2. [Prompt 6](https://gemini.google.com/?prompt_id=qcor9HH7fpfP&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%206_autosubmit)
+3. [Prompt 7](https://gemini.google.com/?prompt_id=sf57SFrDuGhL&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%207_autosubmit)
+4. [Prompt 8](https://gemini.google.com/?prompt_id=IWbiwkLsa1E3&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%208_autosubmit)
 
 ## Cấu trúc file
 

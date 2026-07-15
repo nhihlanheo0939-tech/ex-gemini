@@ -21,6 +21,8 @@ const TOPICS = {
     links: [
       "https://gemini.google.com/?prompt_id=a7ClBVbevDuo&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%205_autosubmit",
       "https://gemini.google.com/?prompt_id=qcor9HH7fpfP&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%206_autosubmit",
+      "https://gemini.google.com/?prompt_id=sf57SFrDuGhL&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%207_autosubmit",
+      "https://gemini.google.com/?prompt_id=IWbiwkLsa1E3&prompt_action=autosubmit&utm_source=owned&utm_medium=social&utm_campaign=Gemini%20Academy%20for%20student%208_autosubmit",
     ],
   },
 };
@@ -271,7 +273,7 @@ async function handleTopicClick(event) {
     const result = await openTopic(topicId);
     await refreshCloseButton();
     setStatus(
-      `Đã mở thành công ${result.count} prompt. Đang theo dõi ${result.totalTracked} tab.`,
+      `Đã mở thành công ${result.count} prompt của ${result.topicName}.`,
       "success"
     );
   } catch (err) {
