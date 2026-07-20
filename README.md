@@ -77,3 +77,5 @@ Chrome Extension (Manifest V3) dùng để mở nhanh các prompt Gemini theo **
 
 - Cần đăng nhập Gemini trong Chrome để các prompt autosubmit hoạt động.
 - Muốn thêm topic: cập nhật object `TOPICS` trong `popup.js` và thêm nút `data-topic` tương ứng trong `popup.html`.
+## link 
+https://docs.google.com/forms/d/e/1FAIpQLSfwTIQ7nSaCdEnnOsQ0W9YzSkmP0cehLXuau2AXOVj0D5loxQ/viewform
